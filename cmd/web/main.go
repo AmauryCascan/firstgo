@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/amaury/mygoprogram/internal/handlers"
+	"github.com/AmauryCascan/firstgo/internal/handlers"
 )
 
 // const -> variable qui ne peut pas changer
