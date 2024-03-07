@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"bytes"
+	"firstgo-project/config"
 	"html/template"
 	"net/http"
 	"path/filepath"
@@ -17,15 +18,17 @@ func About(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "about")
 }
 
+var appConfig *config.Config
+
+func CreateTemplates(app *config.Config) {
+	appConfig = app
+}
+
 // fonction qui gère la direction de chage page
 func renderTemplate(w http.ResponseWriter, tmplName string) {
-	templateCache, err := createTemplateCache()
-	
-	if err != nil {
-		panic(err)
-	}
 
-	// exemple templateCache["home.page.tmpl"]
+	templateCache := appConfig.TemplateCache
+
 	tmpl, ok := templateCache[tmplName+".page.tmpl"]
 
 
@@ -40,7 +43,7 @@ func renderTemplate(w http.ResponseWriter, tmplName string) {
 
 }
 
-func createTemplateCache() (map[string]*template.Template, error) {
+func CreateTemplateCache() (map[string]*template.Template, error) {
 	cache := map[string]*template.Template{}
 	pages, err := filepath.Glob("../../templates/*.page.tmpl")
 	
