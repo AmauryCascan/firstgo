@@ -3,7 +3,7 @@ package handlers
 import (
 	"bytes"
 	"firstgo-project/config"
-	"firstgo-project/models"
+	"firstgo-project/model"
 	"html/template"
 	"net/http"
 	"path/filepath"
