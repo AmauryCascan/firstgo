@@ -3,6 +3,7 @@ package handlers
 import (
 	"bytes"
 	"firstgo-project/config"
+	"firstgo-project/models"
 	"html/template"
 	"net/http"
 	"path/filepath"
@@ -10,12 +11,22 @@ import (
 
 // route home
 func Home(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "home")
+	names := make(map[string]string)
+	names["owner"] = "Amaury"
+
+	renderTemplate(w, "home", &models.TemplateData{
+		StringData: names,
+	})
 }
 
 // route about
 func About(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "about")
+	age := make(map[string]int)
+	age["owner"] = 30
+
+	renderTemplate(w, "about", &models.TemplateData{
+		IntData: age,
+	})
 }
 
 var appConfig *config.Config
@@ -25,7 +36,7 @@ func CreateTemplates(app *config.Config) {
 }
 
 // fonction qui gère la direction de chage page
-func renderTemplate(w http.ResponseWriter, tmplName string) {
+func renderTemplate(w http.ResponseWriter, tmplName string, td *models.TemplateData) {
 
 	templateCache := appConfig.TemplateCache
 
@@ -38,7 +49,7 @@ func renderTemplate(w http.ResponseWriter, tmplName string) {
 	}
 
 	buffer := new(bytes.Buffer)
-	tmpl.Execute(buffer, nil)
+	tmpl.Execute(buffer, td)
 	buffer.WriteTo(w)
 
 }
