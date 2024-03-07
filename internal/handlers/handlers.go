@@ -27,7 +27,8 @@ func renderTemplate(w http.ResponseWriter, tmplName string) {
 
 	// exemple templateCache["home.page.tmpl"]
 	tmpl, ok := templateCache[tmplName+".page.tmpl"]
-	
+
+
 	if !ok {
 		http.Error(w, "Le template n'existe pas !", http.StatusInternalServerError)
 		return
@@ -41,8 +42,8 @@ func renderTemplate(w http.ResponseWriter, tmplName string) {
 
 func createTemplateCache() (map[string]*template.Template, error) {
 	cache := map[string]*template.Template{}
-	pages, err := filepath.Glob("./templates/*.page.tmpl")
-
+	pages, err := filepath.Glob("../../templates/*.page.tmpl")
+	
 	if err != nil {
 		return cache, err
 	}
@@ -51,17 +52,17 @@ func createTemplateCache() (map[string]*template.Template, error) {
 		name := filepath.Base(page)
 		tmpl := template.Must(template.ParseFiles(page))
 
-		layouts, err := filepath.Glob("../templates/layouts/*.layout.tmpl")
+		layouts, err := filepath.Glob("../../templates/layouts/*.layout.tmpl")
 
 		if err != nil {
 			return cache, err
 		}
 
 		if len(layouts) > 0 {
-			tmpl.ParseGlob("../templates/layouts/*.layout.tmpl")
+			tmpl.ParseGlob("../../templates/layouts/*.layout.tmpl")
 		}
 		cache[name] = tmpl
 	}
-
+	
 	return cache, nil
 }
